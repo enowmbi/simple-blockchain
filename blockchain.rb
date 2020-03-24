@@ -48,4 +48,17 @@ class Blockchain
     end
   end
 
+  def calculate_balance(address_of_wallet)
+    total_coins_received = 0
+    total_coins_sent = 0
+    @chain.each do |block|
+      if block.transaction.address_of_receiver == address_of_wallet
+        total_coins_received += block.transaction.amount
+      elsif block.transaction.address_of_sender == address_of_wallet
+        total_coins_sent += block.transaction.amount
+      end
+    end
+    total = total_entries - total_exits
+    return total
+  end
 end
