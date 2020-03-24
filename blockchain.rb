@@ -15,6 +15,7 @@ class Blockchain
     #create a new block with manually set values and then push it to the chain
     genesis_block = Block.new(Time.now(),Transaction.new("","",0))   
     genesis_block.previous_hash ='0'
+    genesis_block.hash = genesis_block.calculate_hash()
     @chain << genesis_block
   end
 
@@ -46,5 +47,5 @@ class Blockchain
       return true
     end
   end
-end
 
+end
