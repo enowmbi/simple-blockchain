@@ -3,7 +3,7 @@ class Block
   require 'digest'
 
   attr_reader :data
-  attr_accessor :previous_hash, :hash
+  attr_accessor :previous_hash, :hash, :transaction
 
   def initialize(timestamp, transaction)
     @timestamp = timestamp
