@@ -3,10 +3,11 @@ class Blockchain
   require_relative 'block'
   require_relative 'transaction'
 
-  attr_reader :chain
+  attr_reader :chain, :difficulty
 
   def initialize
     @chain = []
+    @difficulty = 2
     #initialize with genesis block
     create_genesis_block
   end
@@ -22,7 +23,7 @@ class Blockchain
   def add_block(block)
     #get the hash of the previous block and also compute the hash of the current block
     block.previous_hash = get_lattest_block.hash
-    block.hash = block.calculate_hash()
+    block.mine_block(@difficulty)
     @chain << block
   end
 
