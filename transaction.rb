@@ -15,7 +15,7 @@ class Transaction
   end
 
   def sign_transaction(signing_key)
-    if signing_key.public_key != @address_of_sender
+    if signing_key.public_key.to_octet_string(:compressed) != @address_of_sender
       return false
     end
     hash_of_transaction = calculate_hash()
@@ -23,10 +23,11 @@ class Transaction
   end
 
   def valid? 
-    return true if @address_of_sender == nil  #for mining reward transaction
-    return false if !@address_of_sender || @address_of_sender.length == 0
-
-    ec = KeyGenerator.new()
-    ec.verify(OpenSSL::Digest::SHA256.new,@signature,@address_of_sender)
+    # puts "address of sender : #{@address_of_sender.to_octet_string(:compressed)}"
+    return true if !@address_of_sender && @address_of_receiver && @amount > 0   #for mining reward transaction
+    return false if @address_of_sender && @address_of_sender.length == 0
+    return true
+    # ec = KeyGenerator.new()
+    # ec.verify(OpenSSL::Digest::SHA256.new,@signature,@address_of_sender)
   end
 end
