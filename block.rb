@@ -2,7 +2,6 @@ class Block
 
   require 'digest'
 
-  attr_reader :data
   attr_accessor :previous_hash, :hash, :transaction
 
   def initialize(timestamp, transaction)
@@ -29,6 +28,13 @@ class Block
       end
     end
 
+  end
+
+  def has_valid_transactions?
+    @transactions.each do |transaction|
+      return false if !transaction.valid?
+    end
+    return true
   end
 
 end
