@@ -1,7 +1,7 @@
 require 'openssl'
 
 class KeyGenerator
-  
+
   attr_reader :key_pair, :private_key, :public_key
 
   def initialize
