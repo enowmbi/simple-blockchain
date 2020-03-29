@@ -72,13 +72,11 @@ class Blockchain
     end
   end
 
-  def calculate_balance(wallet_address)
+  def get_balance(wallet_address)
     balance = 0
-    coins_received =0
-    coins_sent =0
     if self.chain.length > 1
-      index_of_last_mined_block_on_chain = self.chain.length - 1
       index_of_first_mined_block_on_chain = 1
+      index_of_last_mined_block_on_chain = self.chain.length - 1
 
       index_of_first_mined_block_on_chain.upto(index_of_last_mined_block_on_chain) do |index_of_block|
         block = self.chain[index_of_block]
@@ -86,19 +84,15 @@ class Blockchain
         0.upto(index_of_last_transaction_on_block) do |index_of_transaction|
           transaction = block.transactions[index_of_transaction]
           if transaction.address_of_receiver == wallet_address
-            coins_received += transaction.amount
+            balance += transaction.amount
           end
           if transaction.address_of_sender == wallet_address
-            coins_sent += transaction.amount
+            balance -= transaction.amount
           end
         end
-      balance = coins_received - coins_sent
-      return balance
       end
-    else
-      return 0
     end
-
+    return balance
   end
 
 end
