@@ -1,14 +1,14 @@
 require 'openssl'
 
 class KeyGenerator
-  attr_reader :key, :private_key, :public_key
+  
+  attr_reader :key_pair, :private_key, :public_key
+
   def initialize
     ec = OpenSSL::PKey::EC.new('secp256k1')
-    @key = ec.generate_key()
-    puts "generated key: #{@key}"
-    @private_key = @key.private_key
-    @public_key = @key.public_key
-    puts "private key: #{@private_key}"
-    puts "public key: #{@public_key}"
+    @key_pair = ec.generate_key!
+    puts "generated key: #{self.key_pair}"
+    @private_key = self.key_pair.private_key
+    @public_key = self.key_pair.public_key
   end
 end
