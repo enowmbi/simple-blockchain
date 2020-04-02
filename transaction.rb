@@ -15,16 +15,15 @@ class Transaction
   end
 
   def sign_transaction(signing_key)
-    if signing_key.public_key.to_octet_string(:compressed) != @address_of_sender
-      return false
+    if signing_key.public_key.to_bn.to_s != @address_of_sender
+      raise "You can't sign transactions for other wallets"
     end
-    hash_of_transaction = calculate_hash()
+    hash_of_transaction = self.calculate_hash()
     @signature = signing_key.sign(OpenSSL::Digest::SHA256.new,hash_of_transaction)
   end
 
   def valid? 
-    # puts "address of sender : #{@address_of_sender.to_octet_string(:compressed)}"
-    return true if !@address_of_sender && @address_of_receiver && @amount > 0   #for mining reward transaction
+    return true if !@address_of_sender || @address_of_receiver && @amount > 0   #for mining reward transaction
     return false if @address_of_sender && @address_of_sender.length == 0
     return true
     # ec = KeyGenerator.new()
